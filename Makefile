@@ -29,4 +29,5 @@ vendor/Voron.ini: $(VORON_ORIGINAL)
 	./set_opt_in_section.sh '[printer:*common*]' 'use_firmware_retraction' 1
 	./set_opt_in_section.sh '[printer:*common*]' 'skirts' 0
 	./set_opt_in_section.sh '[printer:*common*]' 'default_acceleration' 0
+	./set_opt_in_section.sh '[printer:*common*]' 'thumbnails_with_bed' 0
 	cat kd_addition.ini >> $@
