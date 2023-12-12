@@ -22,6 +22,7 @@ find_opt_in_section() {
     local SECT_LINE="$(find_section "$SECT_NAME")"
     local LINE_AFTER_SECT="$(tail -n "+$SECT_LINE" "$FILE" | grep -nE "^$OPT_NAME = "  | cut -d: -f1 | head -n1)"
     echo $((SECT_LINE + LINE_AFTER_SECT - 1))
+    echo $((SECT_LINE + LINE_AFTER_SECT - 1)) 1>&2
 }
 
 is_line_empty() {
@@ -37,6 +38,9 @@ is_line_empty() {
 OPT_LINE="$(find_opt_in_section "$SECTION" "$OPTION")"
 
 if is_line_empty "$OPT_LINE"; then
-    VALUE+="\n"
+    # hopefully jump to the next section
+    OPT_LINE=$((OPT_LINE + 2))
+    (head -n $((OPT_LINE - 1)) "$FILE"; echo "$OPTION = $VALUE"; tail -n +$((OPT_LINE)) "$FILE") > "$TMP_FILE" && mv "$TMP_FILE" "$FILE"
+else
+    (head -n $((OPT_LINE - 1)) "$FILE"; echo "$OPTION = $VALUE"; tail -n +$((OPT_LINE + 1)) "$FILE") > "$TMP_FILE" && mv "$TMP_FILE" "$FILE"
 fi
-(head -n $((OPT_LINE - 1)) "$FILE"; echo "$OPTION = $VALUE"; tail -n +$((OPT_LINE + 1)) "$FILE") > "$TMP_FILE" && mv "$TMP_FILE" "$FILE"
