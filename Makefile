@@ -31,4 +31,5 @@ vendor/Voron.ini: $(VORON_ORIGINAL)
 	./set_opt_in_section.sh '[printer:*common*]' 'default_acceleration' 0
 	./set_opt_in_section.sh '[printer:*common*]' 'thumbnails_with_bed' 0
 	./set_opt_in_section.sh '[filament:*BasicABS*]' 'extrusion_multiplier' '0.95'
+	./set_opt_in_section.sh '[filament:*BasicABS*]' 'temperature' '260'
 	cat kd_addition.ini >> $@
